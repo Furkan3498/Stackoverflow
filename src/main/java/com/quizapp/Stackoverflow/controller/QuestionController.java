@@ -22,20 +22,19 @@ public class QuestionController {
         this.questionService = questionService;
     }
 
+
     @PostMapping
-    public ResponseEntity<QuestionResponseDTO> create(
-            @RequestBody /* @Valid  */ QuestionRequestDTO dto,
-            Principal principal) {
-        return ResponseEntity.ok(questionService.createQuestion(dto, principal.getName()));
+    public ResponseEntity<?> createQuestion(@RequestBody QuestionRequestDTO questionDTO, Principal principal) {
+        return ResponseEntity.ok(questionService.createQuestion(questionDTO, principal.getName()));
     }
 
     @GetMapping
-    public ResponseEntity<List<QuestionResponseDTO>> getAll() {
+    public ResponseEntity<?> getAllQuestions() {
         return ResponseEntity.ok(questionService.getAllQuestions());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<QuestionResponseDTO> getById(@PathVariable Long id) {
+    public ResponseEntity<?> getQuestionById(@PathVariable Long id) {
         return ResponseEntity.ok(questionService.getQuestionById(id));
     }
 

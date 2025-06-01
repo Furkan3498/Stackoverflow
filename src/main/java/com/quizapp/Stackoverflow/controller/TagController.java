@@ -1,6 +1,6 @@
 package com.quizapp.Stackoverflow.controller;
 
-import com.quizapp.Stackoverflow.service.TagService;
+import com.quizapp.Stackoverflow.service.TagServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/tags")
 public class TagController {
 
-    private final TagService tagService;
+    private final TagServiceImpl tagService;
 
-    public TagController(TagService tagService) {
+    public TagController(TagServiceImpl tagService) {
         this.tagService = tagService;
     }
 

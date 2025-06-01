@@ -1,7 +1,6 @@
 package com.quizapp.Stackoverflow.controller;
 
-import com.quizapp.Stackoverflow.model.Answer;
-import com.quizapp.Stackoverflow.service.AnswerService;
+import com.quizapp.Stackoverflow.service.AnswerServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,14 +14,15 @@ import java.security.Principal;
 public class AnswerController {
 
 
-    private final AnswerService answerService;
 
-    public AnswerController(AnswerService answerService) {
+    private final AnswerServiceImpl answerService;
+
+    public AnswerController(AnswerServiceImpl answerService) {
         this.answerService = answerService;
     }
 
     @PostMapping("/{questionId}")
-    public ResponseEntity<?> addAnswer(@PathVariable Long questionId, @RequestBody Answer answer, Principal principal) {
-        return ResponseEntity.ok(answerService.addAnswer(questionId, answer, principal.getName()));
+    public ResponseEntity<?> addAnswer(@PathVariable Long questionId, @RequestBody AnswerRequestDTO answerDTO, Principal principal) {
+        return ResponseEntity.ok(answerService.addAnswer(questionId, answerDTO, principal.getName()));
     }
 }
