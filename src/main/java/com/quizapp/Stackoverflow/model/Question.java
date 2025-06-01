@@ -16,23 +16,19 @@ import java.util.List;
 @AllArgsConstructor
 public class Question {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String title;
-
-    @Lob
     private String content;
-
-    private LocalDateTime createdAt;
-
-    private int voteCount;
 
     @ManyToOne
     private User user;
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
-    private List<Answer> answers = new ArrayList<>();
-
     @ManyToMany
-    private List<Tag> tags;
+    private List<Tag> tags = new ArrayList<>();
+
+    private int voteCount = 0;
+
+    private LocalDateTime createdAt = LocalDateTime.now();
 }

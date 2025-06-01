@@ -3,6 +3,7 @@ package com.quizapp.Stackoverflow.controller;
 import com.quizapp.Stackoverflow.model.User;
 import com.quizapp.Stackoverflow.repository.UserRepository;
 import com.quizapp.Stackoverflow.security.JWTUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,17 +17,11 @@ import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/auth")
-
+@RequiredArgsConstructor
 public class AuthController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JWTUtil jwtUtil;
-
-    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder, JWTUtil jwtUtil) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtUtil = jwtUtil;
-    }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user) {
