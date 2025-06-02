@@ -1,5 +1,6 @@
 package com.quizapp.Stackoverflow.controller;
 
+import com.quizapp.Stackoverflow.dto.AnswerRequestDTO;
 import com.quizapp.Stackoverflow.service.AnswerServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

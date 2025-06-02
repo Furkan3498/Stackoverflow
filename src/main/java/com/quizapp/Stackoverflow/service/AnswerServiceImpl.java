@@ -1,5 +1,8 @@
 package com.quizapp.Stackoverflow.service;
 
+import com.quizapp.Stackoverflow.dto.AnswerRequestDTO;
+import com.quizapp.Stackoverflow.dtoResponse.AnswerResponseDTO;
+import com.quizapp.Stackoverflow.mapper.AnswerMapper;
 import com.quizapp.Stackoverflow.model.Answer;
 import com.quizapp.Stackoverflow.model.Question;
 import com.quizapp.Stackoverflow.model.User;
@@ -11,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class AnswerServiceImpl {

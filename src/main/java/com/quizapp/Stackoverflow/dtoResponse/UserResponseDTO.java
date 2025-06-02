@@ -1,11 +1,23 @@
 package com.quizapp.Stackoverflow.dtoResponse;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 public class UserResponseDTO {
+    private Long id;
     private String username;
     private String email;
-    private LocalDateTime createdAt;
+    private Set<String> roles;
+
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;
@@ -23,11 +35,11 @@ public class UserResponseDTO {
         this.email = email;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public Set<String> getRoles() {
+        return roles;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setRoles(Set<String> roles) {
+        this.roles = roles;
     }
 }

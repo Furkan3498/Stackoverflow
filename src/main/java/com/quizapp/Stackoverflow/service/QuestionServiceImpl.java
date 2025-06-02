@@ -39,7 +39,7 @@ public class QuestionServiceImpl implements IQuestionService{
 
         List<Tag> tags = dto.getTagNames().stream()
                 .map(name -> tagRepository.findByName(name)
-                        .orElseGet(() -> tagRepository.save(name Tag())))
+                        .orElseGet(() -> tagRepository.save(new Tag())))
                 .collect(Collectors.toList());
 
         Question question = new Question();
