@@ -6,6 +6,8 @@ import com.quizapp.Stackoverflow.model.Question;
 import com.quizapp.Stackoverflow.service.IQuestionService;
 import com.quizapp.Stackoverflow.service.QuestionServiceImpl;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -23,19 +25,20 @@ public class QuestionController {
     }
 
 
-    @PostMapping
-    public ResponseEntity<?> createQuestion(@RequestBody QuestionRequestDTO questionDTO, Principal principal) {
-        return ResponseEntity.ok(questionService.createQuestion(questionDTO, principal.getName()));
-    }
-
     @GetMapping
-    public ResponseEntity<?> getAllQuestions() {
+    public ResponseEntity<List<QuestionResponseDTO>> getAllQuestions() {
         return ResponseEntity.ok(questionService.getAllQuestions());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getQuestionById(@PathVariable Long id) {
+    public ResponseEntity<QuestionResponseDTO> getById(@PathVariable Long id) {
         return ResponseEntity.ok(questionService.getQuestionById(id));
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<QuestionResponseDTO> addQuestion(@RequestBody QuestionRequestDTO dto,
+                                                           @AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(questionService.createQuestion(dto, userDetails.getUsername()));
     }
 
 }

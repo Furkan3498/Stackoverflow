@@ -1,6 +1,8 @@
 package com.quizapp.Stackoverflow.mapper;
 
 
+import com.quizapp.Stackoverflow.dtoResponse.AnswerResponseDTO;
+import com.quizapp.Stackoverflow.model.Answer;
 import org.springframework.stereotype.Component;
 
 @Component

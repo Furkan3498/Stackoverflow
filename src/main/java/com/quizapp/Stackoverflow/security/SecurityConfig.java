@@ -3,6 +3,7 @@ package com.quizapp.Stackoverflow.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,8 +30,9 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/questions/add").hasRole("ADMIN")
+                        .requestMatchers("/api/auth/**").permitAll()                // login, register
+                        .requestMatchers(HttpMethod.GET, "/api/questions/**").permitAll() // 👈 soruları herkes görebilir
+                        .requestMatchers("/api/questions/add").hasRole("ADMIN")     // sadece admin ekler
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
