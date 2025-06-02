@@ -14,7 +14,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,24 +34,25 @@ public class QuestionServiceImpl implements IQuestionService{
         this.questionMapper = questionMapper;
     }
 
-    @Override
     public QuestionResponseDTO createQuestion(QuestionRequestDTO dto, String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
-        List<Tag> tags = dto.getTagNames().stream()
-                .map(name -> tagRepository.findByName(name)
-                        .orElseGet(() -> tagRepository.save(new Tag())))
-                .collect(Collectors.toList());
 
         Question question = new Question();
         question.setTitle(dto.getTitle());
         question.setContent(dto.getContent());
         question.setUser(user);
-        question.setTags(tags);
+
+        Set<Tag> tagEntities = dto.getTags().stream()
+                .map(name -> tagRepository.findByName(name)
+                        .orElseGet(() -> tagRepository.save(new Tag(null, name, new HashSet<>())))
+                ).collect(Collectors.toSet());
+
+        question.setTags(tagEntities);
 
         questionRepository.save(question);
-        return questionMapper.toDTO(question);
+
+        return mapper.toResponseDTO(question);
     }
 
     @Override

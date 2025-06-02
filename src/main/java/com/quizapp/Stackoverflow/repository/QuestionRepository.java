@@ -10,4 +10,5 @@ public interface QuestionRepository extends JpaRepository<Question,Long> {
 
     int countByUser(User user);
     List<Question> findByUser(User user);
+    List<Question> findByTagsNameIgnoreCase(String tagName);
 }
