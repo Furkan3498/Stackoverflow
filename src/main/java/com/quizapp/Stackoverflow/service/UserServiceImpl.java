@@ -1,6 +1,9 @@
 package com.quizapp.Stackoverflow.service;
 
+import com.quizapp.Stackoverflow.dto.UserProfileDTO;
 import com.quizapp.Stackoverflow.model.User;
+import com.quizapp.Stackoverflow.repository.AnswerRepository;
+import com.quizapp.Stackoverflow.repository.QuestionRepository;
 import com.quizapp.Stackoverflow.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -8,15 +11,35 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements IUserService{
+public class UserServiceImpl  {
 
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
+    private final QuestionRepository questionRepository;
+    private final AnswerRepository answerRepository;
 
-    @Override
-    public UserResponseDTO getUserProfile(String username) {
+    public UserProfileDTO getProfile(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        return userMapper.toDTO(user);
+
+        int questionCount = questionRepository.countByUser(user);
+        int answerCount = answerRepository.countByUser(user);
+
+        int questionVotes = questionRepository.findByUser(user).stream()
+                .mapToInt(q -> q.getUpvotes().size()) // varsa set olarak tutuluyorsa
+                .sum();
+
+        int answerVotes = answerRepository.findByUser(user).stream()
+                .mapToInt(a -> a.getUpvotes().size())
+                .sum();
+
+        int reputation = (questionVotes + answerVotes) * 10;
+
+        return new UserProfileDTO(
+                user.getUsername(),
+                user.getEmail(),
+                questionCount,
+                answerCount,
+                reputation
+        );
     }
 }

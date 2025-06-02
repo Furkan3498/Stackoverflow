@@ -35,6 +35,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/questions/add").hasRole("ADMIN") // sadece admin
                         .requestMatchers(HttpMethod.POST, "/api/answers/**").authenticated()  // login olanlar yorum yapabilir
                         .requestMatchers(HttpMethod.POST, "/api/votes/**").authenticated()    // login olanlar oy verebilir
+                        .requestMatchers("/api/users/profile").authenticated()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
