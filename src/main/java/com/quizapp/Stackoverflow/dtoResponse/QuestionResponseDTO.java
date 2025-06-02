@@ -15,4 +15,6 @@ public class QuestionResponseDTO {
     private List<String> tags;
     private int voteCount;
     private LocalDateTime createdAt;
+
+
 }

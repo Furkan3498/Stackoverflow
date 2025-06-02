@@ -1,17 +1,19 @@
 package com.quizapp.Stackoverflow.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Data
 public class Comment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     private String content;
 
     @ManyToOne
@@ -23,5 +25,5 @@ public class Comment {
     @ManyToOne
     private Answer answer;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 }
