@@ -1,11 +1,13 @@
 package com.quizapp.Stackoverflow.controller;
 
+import com.quizapp.Stackoverflow.dto.QuestionRequestDTO;
 import com.quizapp.Stackoverflow.dtoResponse.QuestionResponseDTO;
 import com.quizapp.Stackoverflow.model.Question;
 import com.quizapp.Stackoverflow.repository.QuestionRepository;
 import com.quizapp.Stackoverflow.service.IQuestionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,6 +47,13 @@ public class QuestionController {
     @GetMapping("/{id}")
     public ResponseEntity<QuestionResponseDTO> getById(@PathVariable Long id) {
         return ResponseEntity.ok(questionService.getQuestionById(id));
+    }
+    @GetMapping("/top")
+    public ResponseEntity<List<QuestionResponseDTO>> getTopQuestions() {
+        List<Question> questions = questionRepository.findAllOrderByUpvoteCountDesc();
+        return ResponseEntity.ok(
+                questions.stream().map(mapper::toResponseDTO).collect(Collectors.toList())
+        );
     }
 
     @PostMapping("/add")
