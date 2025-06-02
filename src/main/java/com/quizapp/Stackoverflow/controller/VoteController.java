@@ -3,6 +3,8 @@ package com.quizapp.Stackoverflow.controller;
 
 import com.quizapp.Stackoverflow.service.VoteServiceImpl;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -18,12 +20,18 @@ public class VoteController {
     }
 
     @PostMapping("/question/{questionId}")
-    public ResponseEntity<?> voteQuestion(@PathVariable Long questionId, @RequestParam boolean upvote, Principal principal) {
-        return ResponseEntity.ok(voteService.voteQuestion(questionId, upvote, principal.getName()));
+    public ResponseEntity<String> voteQuestion(@PathVariable Long questionId,
+                                               @RequestParam boolean upvote,
+                                               @AuthenticationPrincipal UserDetails userDetails) {
+        voteService.voteQuestion(questionId, upvote, userDetails.getUsername());
+        return ResponseEntity.ok("Vote saved");
     }
 
     @PostMapping("/answer/{answerId}")
-    public ResponseEntity<?> voteAnswer(@PathVariable Long answerId, @RequestParam boolean upvote, Principal principal) {
-        return ResponseEntity.ok(voteService.voteAnswer(answerId, upvote, principal.getName()));
+    public ResponseEntity<String> voteAnswer(@PathVariable Long answerId,
+                                             @RequestParam boolean upvote,
+                                             @AuthenticationPrincipal UserDetails userDetails) {
+        voteService.voteAnswer(answerId, upvote, userDetails.getUsername());
+        return ResponseEntity.ok("Vote saved");
     }
 }

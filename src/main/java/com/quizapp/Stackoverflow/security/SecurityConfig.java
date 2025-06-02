@@ -30,9 +30,11 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()                // login, register
-                        .requestMatchers(HttpMethod.GET, "/api/questions/**").permitAll() // 👈 soruları herkes görebilir
-                        .requestMatchers("/api/questions/add").hasRole("ADMIN")     // sadece admin ekler
+                        .requestMatchers("/api/auth/**").permitAll()                           // login/register
+                        .requestMatchers(HttpMethod.GET, "/api/questions/**").permitAll()     // herkes görebilir
+                        .requestMatchers(HttpMethod.POST, "/api/questions/add").hasRole("ADMIN") // sadece admin
+                        .requestMatchers(HttpMethod.POST, "/api/answers/**").authenticated()  // login olanlar yorum yapabilir
+                        .requestMatchers(HttpMethod.POST, "/api/votes/**").authenticated()    // login olanlar oy verebilir
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
