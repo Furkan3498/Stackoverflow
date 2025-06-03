@@ -1,10 +1,7 @@
 package com.quizapp.Stackoverflow.service;
 
 import com.quizapp.Stackoverflow.dto.VoteRequestDTO;
-import com.quizapp.Stackoverflow.model.Answer;
-import com.quizapp.Stackoverflow.model.Question;
-import com.quizapp.Stackoverflow.model.User;
-import com.quizapp.Stackoverflow.model.Vote;
+import com.quizapp.Stackoverflow.model.*;
 import com.quizapp.Stackoverflow.repository.AnswerRepository;
 import com.quizapp.Stackoverflow.repository.QuestionRepository;
 import com.quizapp.Stackoverflow.repository.UserRepository;

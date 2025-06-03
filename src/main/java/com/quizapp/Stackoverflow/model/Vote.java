@@ -10,11 +10,17 @@ import lombok.*;
 public class Vote {
     @Id @GeneratedValue
     private Long id;
+
     @ManyToOne
     private User user;
+
     @ManyToOne
     private Question question;
+
     @ManyToOne
     private Answer answer;
-    private boolean upvote;
+
+    @Enumerated(EnumType.STRING)
+    private VoteType type;
 }
+
