@@ -18,9 +18,11 @@ public class Notification {
     @Id
     @GeneratedValue
     private Long id;
+
     private String message;
-    private boolean read;
-    @ManyToOne
-    private User recipient;
+
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @ManyToOne
+    private User user;
 }
