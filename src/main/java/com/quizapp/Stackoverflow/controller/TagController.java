@@ -1,5 +1,8 @@
 package com.quizapp.Stackoverflow.controller;
 
+import com.quizapp.Stackoverflow.dto.TagRequestDTO;
+import com.quizapp.Stackoverflow.dtoResponse.TagResponseDTO;
+import com.quizapp.Stackoverflow.mapper.TagMapper;
 import com.quizapp.Stackoverflow.model.Tag;
 import com.quizapp.Stackoverflow.service.TagService;
 import lombok.RequiredArgsConstructor;
