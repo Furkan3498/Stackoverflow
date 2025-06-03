@@ -21,4 +21,18 @@ public class AnswerMapper {
         answer.setContent(dto.getContent());
         return answer;
     }
-}
+
+
+
+        public AnswerResponseDTO toDTO(Answer answer) {
+            AnswerResponseDTO dto = new AnswerResponseDTO();
+            dto.setId(answer.getId());
+            dto.setContent(answer.getContent());
+            dto.setAuthor(answer.getAuthor().getUsername());
+            dto.setCreatedAt(answer.getCreatedAt());
+            return dto;
+        }
+
+
+    }
+

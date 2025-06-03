@@ -23,6 +23,7 @@ public class AnswerService {
     private final AnswerRepository answerRepository;
     private final QuestionRepository questionRepository;
     private final UserService userService;
+    private final QuestionService questionService;
 
     public Answer postAnswer(Long questionId, AnswerRequestDTO dto) {
         Question question = questionRepository.findById(questionId)
@@ -35,5 +36,10 @@ public class AnswerService {
 
         return answerRepository.save(answer);
     }
+    public List<Answer> getAnswersByQuestion(Long questionId) {
+        Question question = questionService.getById(questionId);
+        return answerRepository.findByQuestionId(question.getId());
+    }
+
 }
 
