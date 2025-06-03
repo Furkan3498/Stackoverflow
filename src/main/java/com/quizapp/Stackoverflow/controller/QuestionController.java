@@ -4,7 +4,6 @@ import com.quizapp.Stackoverflow.dto.QuestionRequestDTO;
 import com.quizapp.Stackoverflow.dtoResponse.QuestionResponseDTO;
 import com.quizapp.Stackoverflow.model.Question;
 import com.quizapp.Stackoverflow.repository.QuestionRepository;
-import com.quizapp.Stackoverflow.service.IQuestionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;

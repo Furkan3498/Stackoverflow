@@ -2,13 +2,11 @@ package com.quizapp.Stackoverflow.controller;
 
 import com.quizapp.Stackoverflow.dto.AnswerRequestDTO;
 import com.quizapp.Stackoverflow.dtoResponse.AnswerResponseDTO;
-import com.quizapp.Stackoverflow.service.AnswerServiceImpl;
+import com.quizapp.Stackoverflow.service.AnswerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
 
 @RestController
 @RequestMapping("/answers")
@@ -19,9 +17,9 @@ public class AnswerController {
 
 
 
-    private final AnswerServiceImpl answerService;
+    private final AnswerService answerService;
 
-    public AnswerController(AnswerServiceImpl answerService) {
+    public AnswerController(AnswerService answerService) {
         this.answerService = answerService;
     }
 

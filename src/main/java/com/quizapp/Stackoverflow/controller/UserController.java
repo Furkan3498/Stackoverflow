@@ -1,7 +1,7 @@
 package com.quizapp.Stackoverflow.controller;
 
 import com.quizapp.Stackoverflow.dto.UserProfileDTO;
-import com.quizapp.Stackoverflow.service.UserServiceImpl;
+import com.quizapp.Stackoverflow.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
     @GetMapping("/profile")
     public ResponseEntity<UserProfileDTO> getProfile(@AuthenticationPrincipal UserDetails userDetails) {
