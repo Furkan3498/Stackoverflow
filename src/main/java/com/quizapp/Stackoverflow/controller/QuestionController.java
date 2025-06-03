@@ -39,4 +39,10 @@ public class QuestionController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<QuestionResponseDTO> getQuestionById(@PathVariable Long id) {
+        Question question = questionService.getById(id);
+        return ResponseEntity.ok(questionMapper.toDTO(question));
+    }
 }

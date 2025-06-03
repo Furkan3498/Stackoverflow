@@ -1,8 +1,14 @@
 package com.quizapp.Stackoverflow.controller;
 
+import com.quizapp.Stackoverflow.dto.CommentRequestDTO;
+import com.quizapp.Stackoverflow.dtoResponse.CommentResponseDTO;
+import com.quizapp.Stackoverflow.mapper.CommentMapper;
+import com.quizapp.Stackoverflow.model.Comment;
 import com.quizapp.Stackoverflow.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -11,22 +17,23 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/comments")
 @RequiredArgsConstructor
 public class CommentController {
-
     private final CommentService commentService;
+    private final CommentMapper commentMapper;
 
     @PostMapping("/question/{questionId}")
-    public ResponseEntity<Void> commentToQuestion(@PathVariable Long questionId,
-                                                  @RequestBody String content,
-                                                  @AuthenticationPrincipal UserDetails userDetails) {
-        commentService.commentToQuestion(questionId, content, userDetails.getUsername());
-        return ResponseEntity.ok().build();
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<CommentResponseDTO> commentOnQuestion(@PathVariable Long questionId,
+                                                                @RequestBody CommentRequestDTO dto) {
+        Comment comment = commentService.commentOnQuestion(questionId, dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(commentMapper.toResponse(comment));
     }
 
     @PostMapping("/answer/{answerId}")
-    public ResponseEntity<Void> commentToAnswer(@PathVariable Long answerId,
-                                                @RequestBody String content,
-                                                @AuthenticationPrincipal UserDetails userDetails) {
-        commentService.commentToAnswer(answerId, content, userDetails.getUsername());
-        return ResponseEntity.ok().build();
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<CommentResponseDTO> commentOnAnswer(@PathVariable Long answerId,
+                                                              @RequestBody CommentRequestDTO dto) {
+        Comment comment = commentService.commentOnAnswer(answerId, dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(commentMapper.toResponse(comment));
     }
 }
+

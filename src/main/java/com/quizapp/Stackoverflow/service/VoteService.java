@@ -17,43 +17,31 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class VoteService {
     private final VoteRepository voteRepository;
-    private final UserRepository userRepository;
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
+    private final UserService userService;
 
-    public Vote vote(VoteRequestDTO dto, String username) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public void upvoteQuestion(Long questionId) {
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new RuntimeException("Question not found"));
 
-        if (dto.getQuestionId() != null) {
-            Question question = questionRepository.findById(dto.getQuestionId())
-                    .orElseThrow(() -> new RuntimeException("Question not found"));
-            if (voteRepository.existsByUserAndQuestion(user, question)) {
-                throw new RuntimeException("Already voted");
-            }
+        Vote vote = new Vote();
+        vote.setQuestion(question);
+        vote.setUser(userService.getCurrentUser());
+        vote.setType(VoteType.UPVOTE);
+        voteRepository.save(vote);
+    }
 
-            Vote vote = new Vote();
-            vote.setUser(user);
-            vote.setQuestion(question);
-            vote.setUpvote(dto.isUpvote());
-            return voteRepository.save(vote);
-        }
+    public void downvoteAnswer(Long answerId) {
+        Answer answer = answerRepository.findById(answerId)
+                .orElseThrow(() -> new RuntimeException("Answer not found"));
 
-        if (dto.getAnswerId() != null) {
-            Answer answer = answerRepository.findById(dto.getAnswerId())
-                    .orElseThrow(() -> new RuntimeException("Answer not found"));
-            if (voteRepository.existsByUserAndAnswer(user, answer)) {
-                throw new RuntimeException("Already voted");
-            }
-
-            Vote vote = new Vote();
-            vote.setUser(user);
-            vote.setAnswer(answer);
-            vote.setUpvote(dto.isUpvote());
-            return voteRepository.save(vote);
-        }
-
-        throw new RuntimeException("QuestionId or AnswerId required");
+        Vote vote = new Vote();
+        vote.setAnswer(answer);
+        vote.setUser(userService.getCurrentUser());
+        vote.setType(VoteType.DOWNVOTE);
+        voteRepository.save(vote);
     }
 }
+
 

@@ -1,29 +1,35 @@
 package com.quizapp.Stackoverflow.controller;
 
+import com.quizapp.Stackoverflow.model.Tag;
 import com.quizapp.Stackoverflow.service.TagService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/tags")
+@RequestMapping("/api/tags")
+@RequiredArgsConstructor
 public class TagController {
-
     private final TagService tagService;
+    private final TagMapper tagMapper;
 
-    public TagController(TagService tagService) {
-        this.tagService = tagService;
+    @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<TagResponseDTO> createTag(@RequestBody TagRequestDTO dto) {
+        Tag tag = tagService.createTag(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(tagMapper.toDTO(tag));
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllTags() {
-        return ResponseEntity.ok(tagService.getAllTags());
-    }
-
-    @GetMapping("/{tagName}/questions")
-    public ResponseEntity<?> getQuestionsByTag(@PathVariable String tagName) {
-        return ResponseEntity.ok(tagService.getQuestionsByTag(tagName));
+    public ResponseEntity<List<TagResponseDTO>> getAllTags() {
+        List<Tag> tags = tagService.getAllTags();
+        List<TagResponseDTO> response = tags.stream().map(tagMapper::toDTO).collect(Collectors.toList());
+        return ResponseEntity.ok(response);
     }
 }
+

@@ -7,6 +7,7 @@ import com.quizapp.Stackoverflow.model.Tag;
 import com.quizapp.Stackoverflow.repository.QuestionRepository;
 import com.quizapp.Stackoverflow.repository.TagRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,33 +15,17 @@ import java.util.List;
 
 
 @Service
-public class TagService implements ITagService{
+@RequiredArgsConstructor
+public class TagService {
     private final TagRepository tagRepository;
-    private final QuestionRepository questionRepository;
-    private final QuestionMapper questionMapper;
 
-    public TagService(TagRepository tagRepository, QuestionRepository questionRepository, QuestionMapper questionMapper) {
-        this.tagRepository = tagRepository;
-        this.questionRepository = questionRepository;
-        this.questionMapper = questionMapper;
+    public Tag createTag(TagRequestDTO dto) {
+        Tag tag = new Tag();
+        tag.setName(dto.getName());
+        return tagRepository.save(tag);
     }
 
-    @Override
-    public List<String> getAllTags() {
-        return tagRepository.findAll()
-                .stream()
-                .map(Tag::getName)
-                .toList();
-    }
-
-    @Override
-    public List<QuestionResponseDTO> getQuestionsByTag(String tagName) {
-        Tag tag = tagRepository.findByName(tagName)
-                .orElseThrow(() -> new EntityNotFoundException("Tag not found"));
-        return questionRepository.findAll()
-                .stream()
-                .filter(q -> q.getTags().contains(tag))
-                .map(questionMapper::toDTO)
-                .toList();
+    public List<Tag> getAllTags() {
+        return tagRepository.findAll();
     }
 }

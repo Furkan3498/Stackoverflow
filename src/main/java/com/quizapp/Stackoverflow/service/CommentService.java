@@ -22,29 +22,30 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
-    private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
-    private final UserRepository userRepository;
+    private final QuestionRepository questionRepository;
+    private final UserService userService;
 
-    public Comment addComment(CommentRequestDTO dto, String username) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public Comment commentOnQuestion(Long questionId, CommentRequestDTO dto) {
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new RuntimeException("Question not found"));
 
         Comment comment = new Comment();
         comment.setContent(dto.getContent());
-        comment.setAuthor(user);
+        comment.setQuestion(question);
+        comment.setAuthor(userService.getCurrentUser());
 
-        if (dto.getQuestionId() != null) {
-            Question question = questionRepository.findById(dto.getQuestionId())
-                    .orElseThrow(() -> new RuntimeException("Question not found"));
-            comment.setQuestion(question);
-        } else if (dto.getAnswerId() != null) {
-            Answer answer = answerRepository.findById(dto.getAnswerId())
-                    .orElseThrow(() -> new RuntimeException("Answer not found"));
-            comment.setAnswer(answer);
-        } else {
-            throw new RuntimeException("Question or Answer ID is required");
-        }
+        return commentRepository.save(comment);
+    }
+
+    public Comment commentOnAnswer(Long answerId, CommentRequestDTO dto) {
+        Answer answer = answerRepository.findById(answerId)
+                .orElseThrow(() -> new RuntimeException("Answer not found"));
+
+        Comment comment = new Comment();
+        comment.setContent(dto.getContent());
+        comment.setAnswer(answer);
+        comment.setAuthor(userService.getCurrentUser());
 
         return commentRepository.save(comment);
     }

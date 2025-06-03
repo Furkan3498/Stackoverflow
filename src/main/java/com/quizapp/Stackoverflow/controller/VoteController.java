@@ -2,34 +2,31 @@ package com.quizapp.Stackoverflow.controller;
 
 
 import com.quizapp.Stackoverflow.service.VoteService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/votes")
+@RequestMapping("/api/votes")
+@RequiredArgsConstructor
 public class VoteController {
-
     private final VoteService voteService;
 
-    public VoteController(VoteService voteService) {
-        this.voteService = voteService;
+    @PostMapping("/question/{questionId}/up")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Void> upvoteQuestion(@PathVariable Long questionId) {
+        voteService.upvoteQuestion(questionId);
+        return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/question/{questionId}")
-    public ResponseEntity<String> voteQuestion(@PathVariable Long questionId,
-                                               @RequestParam boolean upvote,
-                                               @AuthenticationPrincipal UserDetails userDetails) {
-        voteService.voteQuestion(questionId, upvote, userDetails.getUsername());
-        return ResponseEntity.ok("Vote saved");
-    }
-
-    @PostMapping("/answer/{answerId}")
-    public ResponseEntity<String> voteAnswer(@PathVariable Long answerId,
-                                             @RequestParam boolean upvote,
-                                             @AuthenticationPrincipal UserDetails userDetails) {
-        voteService.voteAnswer(answerId, upvote, userDetails.getUsername());
-        return ResponseEntity.ok("Vote saved");
+    @PostMapping("/answer/{answerId}/down")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Void> downvoteAnswer(@PathVariable Long answerId) {
+        voteService.downvoteAnswer(answerId);
+        return ResponseEntity.ok().build();
     }
 }
+

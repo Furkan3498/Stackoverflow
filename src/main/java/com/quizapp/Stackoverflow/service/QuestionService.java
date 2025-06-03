@@ -24,30 +24,25 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class QuestionService {
     private final QuestionRepository questionRepository;
-    private final UserRepository userRepository;
     private final TagRepository tagRepository;
+    private final UserService userService;
 
-    public Question createQuestion(QuestionRequestDTO dto, String username) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        List<Tag> tags = dto.getTags().stream().map(name ->
-                tagRepository.findByName(name).orElseGet(() -> {
-                    Tag tag = new Tag();
-                    tag.setName(name);
-                    return tagRepository.save(tag);
-                })
-        ).toList();
-
+    public Question createQuestion(QuestionRequestDTO dto) {
         Question question = new Question();
         question.setTitle(dto.getTitle());
         question.setContent(dto.getContent());
-        question.setAuthor(user);
+        question.setAuthor(userService.getCurrentUser());
+
+        List<Tag> tags = dto.getTags().stream()
+                .map(name -> tagRepository.findByName(name)
+                        .orElseGet(() -> tagRepository.save(new Tag(null, name))))
+                .collect(Collectors.toList());
         question.setTags(tags);
+
         return questionRepository.save(question);
     }
 
     public List<Question> getAllQuestions() {
-        return questionRepository.findAllByOrderByCreatedAtDesc();
+        return questionRepository.findAll();
     }
 }

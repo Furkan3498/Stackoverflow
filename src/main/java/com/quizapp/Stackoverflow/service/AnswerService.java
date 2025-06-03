@@ -22,19 +22,18 @@ import java.util.List;
 public class AnswerService {
     private final AnswerRepository answerRepository;
     private final QuestionRepository questionRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public Answer createAnswer(AnswerRequestDTO dto, String username) {
-        Question question = questionRepository.findById(dto.getQuestionId())
+    public Answer postAnswer(Long questionId, AnswerRequestDTO dto) {
+        Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new RuntimeException("Question not found"));
-
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
 
         Answer answer = new Answer();
         answer.setContent(dto.getContent());
         answer.setQuestion(question);
-        answer.setAuthor(user);
+        answer.setAuthor(userService.getCurrentUser());
+
         return answerRepository.save(answer);
     }
 }
+
