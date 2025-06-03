@@ -3,7 +3,8 @@ package com.quizapp.Stackoverflow.dto;
 import lombok.Data;
 
 @Data
-public class AnswerRequestDTO {
+public class VoteRequestDTO {
     private Long questionId;
-    private String content;
+    private Long answerId;
+    private boolean upvote;
 }

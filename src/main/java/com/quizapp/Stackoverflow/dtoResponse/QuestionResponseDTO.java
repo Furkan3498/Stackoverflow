@@ -12,10 +12,7 @@ public class QuestionResponseDTO {
     private Long id;
     private String title;
     private String content;
+    private String author;
+    private List<String> tags;
     private LocalDateTime createdAt;
-    private int voteCount;
-    private Set<String> tags;
-    private UserSummaryDTO author;
-    private List<AnswerResponseDTO> answers;
-    private List<CommentResponseDTO> comments;
 }

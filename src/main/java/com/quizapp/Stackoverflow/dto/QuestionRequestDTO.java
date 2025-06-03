@@ -8,15 +8,7 @@ import java.util.Set;
 
 @Data
 public class QuestionRequestDTO {
-
-        @NotBlank
         private String title;
-
-        @NotBlank
         private String content;
-
-        private Set<String> tags;
-    } // sadece isimleri geliyor örn: ["java", "spring"]
-
-
-
+        private List<String> tags;
+}

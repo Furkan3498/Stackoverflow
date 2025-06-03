@@ -5,9 +5,7 @@ import lombok.Data;
 
 @Data
 public class CommentRequestDTO {
-    @NotBlank
+    private Long questionId;
+    private Long answerId;
     private String content;
-
-    private Long questionId; // opsiyonel
-    private Long answerId;   // opsiyonel
 }
