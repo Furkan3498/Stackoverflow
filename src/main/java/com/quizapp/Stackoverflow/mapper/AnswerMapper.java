@@ -7,12 +7,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AnswerMapper {
-    public AnswerResponseDTO toDTO(Answer answer) {
+    public AnswerResponseDTO toResponse(Answer answer) {
         AnswerResponseDTO dto = new AnswerResponseDTO();
         dto.setId(answer.getId());
         dto.setContent(answer.getContent());
-        dto.setUsername(answer.getUser().getUsername());
-        dto.setVoteCount(answer.getVoteCount());
+        dto.setAuthor(answer.getAuthor().getUsername());
         dto.setCreatedAt(answer.getCreatedAt());
         return dto;
     }
