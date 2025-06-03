@@ -1,11 +1,11 @@
 package com.quizapp.Stackoverflow.service;
 
 
+
 import com.quizapp.Stackoverflow.dto.CommentRequestDTO;
 import com.quizapp.Stackoverflow.dtoResponse.CommentResponseDTO;
 import com.quizapp.Stackoverflow.mapper.CommentMapper;
 import com.quizapp.Stackoverflow.model.Answer;
-
 import com.quizapp.Stackoverflow.model.Comment;
 import com.quizapp.Stackoverflow.model.Question;
 import com.quizapp.Stackoverflow.model.User;
@@ -13,9 +13,7 @@ import com.quizapp.Stackoverflow.repository.AnswerRepository;
 import com.quizapp.Stackoverflow.repository.CommentRepository;
 import com.quizapp.Stackoverflow.repository.QuestionRepository;
 import com.quizapp.Stackoverflow.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.time.LocalDateTime;
 
