@@ -1,26 +1,19 @@
 package com.quizapp.Stackoverflow.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
-public class Comment {
+public class Vote {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Lob
-    private String content;
-
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private boolean upvote; // true = up, false = down
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -34,4 +27,3 @@ public class Comment {
     @JoinColumn(name = "answer_id")
     private Answer answer;
 }
-
