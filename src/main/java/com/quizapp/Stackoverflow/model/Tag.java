@@ -9,17 +9,11 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Tag {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue
     private Long id;
-
     private String name;
-
-    @ManyToMany(mappedBy = "tags")
-    private Set<Question> questions = new HashSet<>();
 }
-
