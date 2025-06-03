@@ -10,4 +10,5 @@ public interface AnswerRepository extends JpaRepository<Answer,Long> {
 
     int countByUser(User user);
     List<Answer> findByUser(User user);
+    List<Answer> findByAuthor(User author);
 }

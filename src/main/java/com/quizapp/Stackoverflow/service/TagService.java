@@ -14,12 +14,12 @@ import java.util.List;
 
 
 @Service
-public class TagServiceImpl implements ITagService{
+public class TagService implements ITagService{
     private final TagRepository tagRepository;
     private final QuestionRepository questionRepository;
     private final QuestionMapper questionMapper;
 
-    public TagServiceImpl(TagRepository tagRepository, QuestionRepository questionRepository, QuestionMapper questionMapper) {
+    public TagService(TagRepository tagRepository, QuestionRepository questionRepository, QuestionMapper questionMapper) {
         this.tagRepository = tagRepository;
         this.questionRepository = questionRepository;
         this.questionMapper = questionMapper;
