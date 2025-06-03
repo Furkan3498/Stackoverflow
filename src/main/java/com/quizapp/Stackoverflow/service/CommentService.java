@@ -13,39 +13,26 @@ import com.quizapp.Stackoverflow.repository.AnswerRepository;
 import com.quizapp.Stackoverflow.repository.CommentRepository;
 import com.quizapp.Stackoverflow.repository.QuestionRepository;
 import com.quizapp.Stackoverflow.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
 @Service
+@RequiredArgsConstructor
 public class CommentService {
-
-
     private final CommentRepository commentRepository;
-    private final UserRepository userRepository;
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
+    private final UserRepository userRepository;
 
-
-
-
-    public CommentService(CommentRepository commentRepository, UserRepository userRepository, QuestionRepository questionRepository, AnswerRepository answerRepository) {
-        this.commentRepository = commentRepository;
-        this.userRepository = userRepository;
-        this.questionRepository = questionRepository;
-        this.answerRepository = answerRepository;
-    }
-
-
-
-    public CommentResponseDTO addComment(CommentRequestDTO dto, String username) {
+    public Comment addComment(CommentRequestDTO dto, String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Comment comment = new Comment();
         comment.setContent(dto.getContent());
-        comment.setUser(user);
-        comment.setCreatedAt(LocalDateTime.now());
+        comment.setAuthor(user);
 
         if (dto.getQuestionId() != null) {
             Question question = questionRepository.findById(dto.getQuestionId())
@@ -56,10 +43,9 @@ public class CommentService {
                     .orElseThrow(() -> new RuntimeException("Answer not found"));
             comment.setAnswer(answer);
         } else {
-            throw new IllegalArgumentException("Either questionId or answerId must be provided");
+            throw new RuntimeException("Question or Answer ID is required");
         }
 
-        Comment savedComment = commentRepository.save(comment);
-        return CommentMapper.toDTO(savedComment);
+        return commentRepository.save(comment);
     }
 }

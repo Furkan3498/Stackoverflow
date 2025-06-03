@@ -1,21 +1,19 @@
 package com.quizapp.Stackoverflow.controller;
 
 
-import com.quizapp.Stackoverflow.service.VoteServiceImpl;
+import com.quizapp.Stackoverflow.service.VoteService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-
 @RestController
 @RequestMapping("/votes")
 public class VoteController {
 
-    private final VoteServiceImpl voteService;
+    private final VoteService voteService;
 
-    public VoteController(VoteServiceImpl voteService) {
+    public VoteController(VoteService voteService) {
         this.voteService = voteService;
     }
 

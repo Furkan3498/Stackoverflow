@@ -1,6 +1,7 @@
 package com.quizapp.Stackoverflow.mapper;
 
 
+import com.quizapp.Stackoverflow.dto.AnswerRequestDTO;
 import com.quizapp.Stackoverflow.dtoResponse.AnswerResponseDTO;
 import com.quizapp.Stackoverflow.model.Answer;
 import org.springframework.stereotype.Component;
@@ -14,5 +15,10 @@ public class AnswerMapper {
         dto.setAuthor(answer.getAuthor().getUsername());
         dto.setCreatedAt(answer.getCreatedAt());
         return dto;
+    }
+    public Answer toEntity(AnswerRequestDTO dto) {
+        Answer answer = new Answer();
+        answer.setContent(dto.getContent());
+        return answer;
     }
 }

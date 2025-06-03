@@ -2,9 +2,14 @@ package com.quizapp.Stackoverflow.controller;
 
 import com.quizapp.Stackoverflow.dto.QuestionRequestDTO;
 import com.quizapp.Stackoverflow.dtoResponse.QuestionResponseDTO;
+import com.quizapp.Stackoverflow.mapper.QuestionMapper;
 import com.quizapp.Stackoverflow.model.Question;
 import com.quizapp.Stackoverflow.repository.QuestionRepository;
+import com.quizapp.Stackoverflow.service.QuestionService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -13,52 +18,25 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/questions")
+@RequestMapping("/api/questions")
+@RequiredArgsConstructor
 public class QuestionController {
+    private final QuestionService questionService;
+    private final QuestionMapper questionMapper;
 
-
-    private final IQuestionService questionService;
-    private final QuestionRepository questionRepository;
-
-    public QuestionController(IQuestionService questionService, QuestionRepository questionRepository) {
-        this.questionService = questionService;
-        this.questionRepository = questionRepository;
+    @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<QuestionResponseDTO> createQuestion(@RequestBody QuestionRequestDTO dto) {
+        Question question = questionService.createQuestion(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(questionMapper.toDTO(question));
     }
-
 
     @GetMapping
-    public ResponseEntity<List<QuestionResponseDTO>> getAllQuestions(
-            @RequestParam(required = false) String tag
-    ) {
-        List<Question> questions;
-
-        if (tag != null) {
-            questions = questionRepository.findByTagsNameIgnoreCase(tag);
-        } else {
-            questions = questionRepository.findAll();
-        }
-
-        return ResponseEntity.ok(
-                questions.stream().map(mapper::toResponseDTO).collect(Collectors.toList())
-        );
-
+    public ResponseEntity<List<QuestionResponseDTO>> getAllQuestions() {
+        List<Question> questions = questionService.getAllQuestions();
+        List<QuestionResponseDTO> response = questions.stream()
+                .map(questionMapper::toDTO)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(response);
     }
-    @GetMapping("/{id}")
-    public ResponseEntity<QuestionResponseDTO> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(questionService.getQuestionById(id));
-    }
-    @GetMapping("/top")
-    public ResponseEntity<List<QuestionResponseDTO>> getTopQuestions() {
-        List<Question> questions = questionRepository.findAllOrderByUpvoteCountDesc();
-        return ResponseEntity.ok(
-                questions.stream().map(mapper::toResponseDTO).collect(Collectors.toList())
-        );
-    }
-
-    @PostMapping("/add")
-    public ResponseEntity<QuestionResponseDTO> addQuestion(@RequestBody QuestionRequestDTO dto,
-                                                           @AuthenticationPrincipal UserDetails userDetails) {
-        return ResponseEntity.ok(questionService.createQuestion(dto, userDetails.getUsername()));
-    }
-
 }

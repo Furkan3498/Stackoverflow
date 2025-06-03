@@ -1,5 +1,6 @@
 package com.quizapp.Stackoverflow.mapper;
 
+import com.quizapp.Stackoverflow.dto.CommentRequestDTO;
 import com.quizapp.Stackoverflow.dtoResponse.CommentResponseDTO;
 import com.quizapp.Stackoverflow.model.Comment;
 import org.springframework.stereotype.Component;
@@ -13,5 +14,11 @@ public class CommentMapper {
         dto.setAuthor(comment.getAuthor().getUsername());
         dto.setCreatedAt(comment.getCreatedAt());
         return dto;
+    }
+
+    public Comment toEntity(CommentRequestDTO dto) {
+        Comment comment = new Comment();
+        comment.setContent(dto.getContent());
+        return comment;
     }
 }
