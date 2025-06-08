@@ -1,6 +1,6 @@
 package com.quizapp.Stackoverflow.service;
 
-package com.quizapp.Stackoverflow.elasticsearch;
+
 
 import com.quizapp.Stackoverflow.model.Question;
 import com.quizapp.Stackoverflow.model.QuestionDocument;
