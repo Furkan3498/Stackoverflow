@@ -18,12 +18,19 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+
 public class AnswerService {
     private final AnswerRepository answerRepository;
     private final QuestionRepository questionRepository;
     private final UserService userService;
     private final QuestionService questionService;
+
+    public AnswerService(AnswerRepository answerRepository, QuestionRepository questionRepository, UserService userService, QuestionService questionService) {
+        this.answerRepository = answerRepository;
+        this.questionRepository = questionRepository;
+        this.userService = userService;
+        this.questionService = questionService;
+    }
 
     public Answer postAnswer(Long questionId, AnswerRequestDTO dto) {
         Question question = questionRepository.findById(questionId)

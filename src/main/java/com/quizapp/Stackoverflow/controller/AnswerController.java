@@ -18,10 +18,15 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/answers")
-@RequiredArgsConstructor
+
 public class AnswerController {
     private final AnswerService answerService;
     private final AnswerMapper answerMapper;
+
+    public AnswerController(AnswerService answerService, AnswerMapper answerMapper) {
+        this.answerService = answerService;
+        this.answerMapper = answerMapper;
+    }
 
     @PostMapping("/question/{questionId}")
     @PreAuthorize("isAuthenticated()")
