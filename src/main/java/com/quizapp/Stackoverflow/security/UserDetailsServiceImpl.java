@@ -2,7 +2,6 @@ package com.quizapp.Stackoverflow.security;
 
 import com.quizapp.Stackoverflow.model.User;
 import com.quizapp.Stackoverflow.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,10 +12,14 @@ import java.util.List;
 
 
 @Service
-@RequiredArgsConstructor
+
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
+
+    public UserDetailsServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
