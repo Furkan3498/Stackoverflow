@@ -6,20 +6,26 @@ import com.quizapp.Stackoverflow.model.Tag;
 import com.quizapp.Stackoverflow.repository.QuestionRepository;
 import com.quizapp.Stackoverflow.repository.TagRepository;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
+
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
     private final TagRepository tagRepository;
     private final UserService userService;
     private final QuestionSearchService questionSearchService;
+
+    public QuestionService(QuestionRepository questionRepository, TagRepository tagRepository, UserService userService, QuestionSearchService questionSearchService) {
+        this.questionRepository = questionRepository;
+        this.tagRepository = tagRepository;
+        this.userService = userService;
+        this.questionSearchService = questionSearchService;
+    }
 
     public Question createQuestion(QuestionRequestDTO dto) {
         Question question = new Question();
