@@ -11,12 +11,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
+
 public class VoteService {
     private final VoteRepository voteRepository;
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
     private final UserService userService;
+
+    public VoteService(VoteRepository voteRepository, QuestionRepository questionRepository, AnswerRepository answerRepository, UserService userService) {
+        this.voteRepository = voteRepository;
+        this.questionRepository = questionRepository;
+        this.answerRepository = answerRepository;
+        this.userService = userService;
+    }
 
     public void upvoteQuestion(Long questionId) {
         Question question = questionRepository.findById(questionId)
