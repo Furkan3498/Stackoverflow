@@ -15,7 +15,7 @@ import java.time.ZoneId;
 import java.util.Date;
 
 @Service
-@RequiredArgsConstructor
+
 public class JwtService {
 
     @Value("${jwt.secret}")
