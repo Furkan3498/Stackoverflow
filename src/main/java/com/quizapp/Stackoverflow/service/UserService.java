@@ -30,8 +30,17 @@ import java.util.stream.Collectors;
 import static org.yaml.snakeyaml.tokens.Token.ID.Tag;
 
 @Service
-@RequiredArgsConstructor
+
 public class UserService {
+    public UserService(UserRepository userRepository, QuestionRepository questionRepository, AnswerRepository answerRepository, PasswordEncoder passwordEncoder, UserMapper userMapper, QuestionMapper questionMapper, AnswerMapper answerMapper) {
+        this.userRepository = userRepository;
+        this.questionRepository = questionRepository;
+        this.answerRepository = answerRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.userMapper = userMapper;
+        this.questionMapper = questionMapper;
+        this.answerMapper = answerMapper;
+    }
 
     private final UserRepository userRepository;
     private final QuestionRepository questionRepository;
