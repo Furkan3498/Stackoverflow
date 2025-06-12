@@ -5,7 +5,6 @@ import com.quizapp.Stackoverflow.dtoResponse.TagResponseDTO;
 import com.quizapp.Stackoverflow.mapper.TagMapper;
 import com.quizapp.Stackoverflow.model.Tag;
 import com.quizapp.Stackoverflow.service.TagService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,10 +15,15 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/tags")
-@RequiredArgsConstructor
+
 public class TagController {
     private final TagService tagService;
     private final TagMapper tagMapper;
+
+    public TagController(TagService tagService, TagMapper tagMapper) {
+        this.tagService = tagService;
+        this.tagMapper = tagMapper;
+    }
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
