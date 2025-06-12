@@ -8,22 +8,24 @@ import com.quizapp.Stackoverflow.dtoResponse.UserResponseDTO;
 import com.quizapp.Stackoverflow.mapper.UserMapper;
 import com.quizapp.Stackoverflow.model.User;
 import com.quizapp.Stackoverflow.service.UserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
-@RequiredArgsConstructor
+
 public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
+
+    public UserController(UserService userService, UserMapper userMapper) {
+        this.userService = userService;
+        this.userMapper = userMapper;
+    }
 
     @GetMapping("/profile")
     @PreAuthorize("isAuthenticated()")
