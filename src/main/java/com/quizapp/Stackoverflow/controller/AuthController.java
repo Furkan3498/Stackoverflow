@@ -6,10 +6,7 @@ import com.quizapp.Stackoverflow.dtoResponse.AuthResponse;
 import com.quizapp.Stackoverflow.model.Role;
 import com.quizapp.Stackoverflow.model.User;
 import com.quizapp.Stackoverflow.repository.UserRepository;
-import com.quizapp.Stackoverflow.security.JWTUtil;
 import com.quizapp.Stackoverflow.security.JwtService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,16 +17,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api/auth")
-@RequiredArgsConstructor
+
 public class AuthController {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+
+    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
+    }
 
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request) {
