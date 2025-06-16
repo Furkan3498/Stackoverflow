@@ -1,6 +1,5 @@
 package com.quizapp.Stackoverflow.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
@@ -10,10 +9,13 @@ import org.springframework.stereotype.Service;
 public class websocketService {
 
 
-    @Autowired
-    private SimpMessagingTemplate messagingTemplate;
+    private final SimpMessagingTemplate messaging;
 
-    public void sendNotification(String username, String message) {
-        messagingTemplate.convertAndSendToUser(username, "/topic/notifications", message);
+    public websocketService(SimpMessagingTemplate messaging) {
+        this.messaging = messaging;
+    }
+
+    public void sendToUser(String username, String message) {
+        messaging.convertAndSendToUser(username, "/topic/notifications", message);
     }
 }
