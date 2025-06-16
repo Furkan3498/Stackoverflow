@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CommentMapper {
-    public CommentResponseDTO toResponse(Comment comment) {
+    public static CommentResponseDTO toResponse(Comment comment) {
         CommentResponseDTO dto = new CommentResponseDTO();
         dto.setId(comment.getId());
         dto.setContent(comment.getContent());

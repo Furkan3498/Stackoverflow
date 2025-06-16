@@ -3,13 +3,19 @@ package com.quizapp.Stackoverflow.service;
 
 
 import com.quizapp.Stackoverflow.dto.CommentRequestDTO;
+import com.quizapp.Stackoverflow.dtoResponse.CommentResponseDTO;
+import com.quizapp.Stackoverflow.mapper.CommentMapper;
 import com.quizapp.Stackoverflow.model.Answer;
 import com.quizapp.Stackoverflow.model.Comment;
 import com.quizapp.Stackoverflow.model.Question;
 import com.quizapp.Stackoverflow.repository.AnswerRepository;
 import com.quizapp.Stackoverflow.repository.CommentRepository;
 import com.quizapp.Stackoverflow.repository.QuestionRepository;
+
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 
@@ -48,5 +54,11 @@ public class CommentService {
         comment.setAuthor(userService.getCurrentUser());
 
         return commentRepository.save(comment);
+    }
+
+    public List<CommentResponseDTO> getCommentsForQuestion(Long questionId) {
+        return commentRepository.findByQuestionId(questionId).stream()
+                .map(CommentMapper::toResponse)
+                .collect(Collectors.toList());
     }
 }
