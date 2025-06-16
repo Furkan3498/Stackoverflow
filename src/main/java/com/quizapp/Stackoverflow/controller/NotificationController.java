@@ -4,7 +4,6 @@ import com.quizapp.Stackoverflow.dtoResponse.NotificationResponseDTO;
 import com.quizapp.Stackoverflow.mapper.NotificationMapper;
 import com.quizapp.Stackoverflow.model.Notification;
 import com.quizapp.Stackoverflow.service.NotificationService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,10 +15,15 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/notifications")
-@RequiredArgsConstructor
+
 public class NotificationController {
     private final NotificationService notificationService;
     private final NotificationMapper notificationMapper;
+
+    public NotificationController(NotificationService notificationService, NotificationMapper notificationMapper) {
+        this.notificationService = notificationService;
+        this.notificationMapper = notificationMapper;
+    }
 
     @GetMapping
     @PreAuthorize("isAuthenticated()")
