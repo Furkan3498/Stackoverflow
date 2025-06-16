@@ -9,14 +9,15 @@ import org.springframework.stereotype.Service;
 public class websocketService {
 
 
-    private final SimpMessagingTemplate messaging;
+    private final SimpMessagingTemplate messagingTemplate;
 
-    public websocketService(SimpMessagingTemplate messaging) {
-        this.messaging = messaging;
+    public websocketService(SimpMessagingTemplate messagingTemplate) {
+        this.messagingTemplate = messagingTemplate;
     }
 
+
     public void sendToUser(String username, String message) {
-        messaging.convertAndSendToUser(username, "/topic/notifications", message);
+        messagingTemplate.convertAndSendToUser(username, "/topic/notifications", message);
     }
 
 
